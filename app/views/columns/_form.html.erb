@@ -1,10 +1,10 @@
 
-<%= simple_form_for(@list) do |f| %>
+<%= simple_form_for([list, column]) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
-    <%#= f.association :company %>
+    <%= f.association :list %>
     <%= f.input :name %>
   </div>
 

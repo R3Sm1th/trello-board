@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Columns</h1>
+
+<div id="columns">
+  <% @columns.each do |column| %>
+    <%= render column %>
+    <p>
+      <%= link_to "Show this column", column %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New column", new_column_path %>
