@@ -1,15 +1,27 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @list %>
-
-<%# vvv Where i left off vvv %>
+<%# <%= render @list %>
+<p>
+  <strong>Name:</strong>
+  <%= @list.name %>
+</p>
 <div>
-  <%= content_tag :div, class: :row do %>
-    <% @list.column.each do |col| %>
+  <%= content_tag :div, class: :row, data: { controller: "draggable" } do %>
+    <% @list.columns.each do |column| %>
       <div class="col">
         <div class="card">
-          <h5>
-  <%# ^^^ %>
+          <h5 class="card-title"><%= column.name %></h5>
+          <div class="card-body">
+            <%= content_tag :ul, class: "card-text dropzone", data: { id: column.id, "draggable-target":"column" } do %>
+              <%= render column.items, list: @list, column: column %>
+            <% end %>
+          </div>
+          <%= link_to "New Item", [:new, @list, column, :item] %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
   <%= link_to "New Column", new_list_column_path(@list) %>
   <%= link_to "Edit this list", edit_list_path(@list) %> |
   <%= link_to "Back to lists", lists_path %>

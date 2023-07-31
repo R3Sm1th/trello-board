@@ -26,10 +26,10 @@ class ListsController < ApplicationController
 
     respond_to do |format|
       if @list.save
-        format.html { redirect_to list_url(@list), notice: "List was successfully created." }
+        format.html { redirect_to @list, notice: 'List was successfully created.' }
         format.json { render :show, status: :created, location: @list }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new }
         format.json { render json: @list.errors, status: :unprocessable_entity }
       end
     end
@@ -39,10 +39,10 @@ class ListsController < ApplicationController
   def update
     respond_to do |format|
       if @list.update(list_params)
-        format.html { redirect_to list_url(@list), notice: "List was successfully updated." }
+        format.html { redirect_to @list, notice: 'List was successfully updated.' }
         format.json { render :show, status: :ok, location: @list }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit }
         format.json { render json: @list.errors, status: :unprocessable_entity }
       end
     end
@@ -60,12 +60,12 @@ class ListsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_list
-      @list = current_user.company.lists.find(params[:id])
-    end
+  def set_list
+    @list = current_user.company.lists.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def list_params
-      params.require(:list).permit(:company_id, :name)
-    end
+  # Only allow a list of trusted parameters through.
+  def list_params
+    params.require(:list).permit(:current_company, :name)
+  end
 end

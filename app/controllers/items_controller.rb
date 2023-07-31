@@ -1,8 +1,8 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: %i[ show edit update destroy ]
-  before_action authenticate_user!
+  before_action :authenticate_user!
   before_action :set_list
   before_action :set_column
+  before_action :set_item, only: %i[ edit update destroy ]
   # GET /items or /items.json
   def index
     @items = Item.all
@@ -25,14 +25,10 @@ class ItemsController < ApplicationController
   def create
     @item = @column.items.new(item_params)
 
-    respond_to do |format|
-      if @item.save
-        format.html { redirect_to list_url(@list), notice: "Item was successfully created." }
-        format.json { render :show, status: :created, location: @item }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.save
+      redirect_to @list, notice: 'Item was successfully created.'
+    else
+      render :new
     end
   end
 
@@ -40,7 +36,7 @@ class ItemsController < ApplicationController
   def update
     respond_to do |format|
       if @item.update(item_params)
-        format.html { redirect_to list_url(@list), notice: "Item was successfully updated." }
+        format.html { redirect_to @list, notice: "Item was successfully updated." }
         format.json { render :show, status: :ok, location: @item }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -60,21 +56,18 @@ class ItemsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_item
-      @item = @column.items.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def item_params
-      params.require(:item).permit(:column_id, :content)
-    end
+  def set_list
+    @list = current_company.lists.includes(columns: :items).find(params[:list_id])
+  end
+  def set_column
+    @column = @list.columns.find(params[:column_id])
+  end
+  def set_item
+    @item = @column.items.find(params[:id])
+  end
 
-    def set_list
-      @list = current_company.lists.includes(columns: :items).find(params[:list_id])
-    end
-
-    def set_column
-      @column = @list.columns.find(params[:column_id])
-    end
+  def item_params
+    params.require(:item).permit(:column_id, :content)
+  end
 end

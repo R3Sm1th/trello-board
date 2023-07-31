@@ -1,10 +1,10 @@
 
-<%= simple_form_for([list, column, item]) do |f| %>
+<%= simple_form_for([list, column, item], local: true) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
   <div class="fields">
-    <%= form.label :content %>
-    <%= form.rich_text_area :content %>
+    <%= f.label :content %>
+    <%= f.rich_text_area :content %>
   </div>
   <%# <div class="form-inputs">
     <%= f.association :column %>

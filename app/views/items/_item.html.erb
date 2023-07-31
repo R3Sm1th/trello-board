@@ -1,7 +1,10 @@
-<div id="<%= dom_id item %>">
-  <p>
-    <strong>Column:</strong>
-    <%= item.column_id %>
-  </p>
-
-</div>
+<%= content_tag :li, data: { "draggable-target": "item", url: list_column_item_path(list, column, item) } do %>
+  <div id="<%= dom_id item %>" class="card">
+    <div class="card-body">
+      <p class="card-text">
+        <%= item.content %>
+      </p>
+      <%= link_to "delete", [list, column, item], method: :delete %>
+    </div>
+  </div>
+<% end %>
