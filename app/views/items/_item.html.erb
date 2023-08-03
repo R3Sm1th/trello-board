@@ -4,7 +4,11 @@
       <p class="card-text">
         <%= item.content %>
       </p>
+      <p> Url: <%= item.url %></p>
+      <p> Tech: <%= item.stack %></p>
+      <p> Deadline: <%= item.deadline %></p>
       <%= link_to "delete", list_column_items_url(list, column, item), method: :delete %>
+      <%= link_to "edit", list_column_items_url(list, column, item), method: :patch %>
     </div>
   </div>
 <% end %>
