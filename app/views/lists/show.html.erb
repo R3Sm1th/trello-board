@@ -1,30 +1,42 @@
 <p style="color: green"><%= notice %></p>
 
+  <div class="listshowtitle">
+    <p>
+      <strong>List:</strong>
+      <%= @list.name %>
+    </p>
+  </div>
 <%# <%= render @list %>
-<p>
-  <strong>Name:</strong>
-  <%= @list.name %>
-</p>
-<div>
-  <%= content_tag :div, class: :row, data: { controller: "draggable" } do %>
-    <% @list.columns.each do |column| %>
-      <div class="col">
-        <div class="card">
-          <h5 class="card-title"><%= column.name %></h5>
-          <div class="card-body">
-            <%= content_tag :ul, class: "card-text dropzone", data: { id: column.id, "draggable-target":"column" } do %>
-              <%= render column.items, list: @list, column: column %>
+<div class="col-12 listshow">
+  <div>
+    <%= content_tag :div, class: :row, data: { controller: "draggable" } do %>
+      <% @list.columns.each do |column| %>
+        <div class="col listshowcol">
+          <div class="card listshowitems">
+            <h5 class="card-title"><%= column.name %></h5>
+            <div class="card-body">
+              <%= content_tag :ul, class: "card-text dropzone", data: { id: column.id, "draggable-target":"column" } do %>
+                <%= render column.items, list: @list, column: column %>
+              <% end %>
+            </div>
+            <%= link_to [:new, @list, column, :item] do %>
+              <i class="fa-solid fa-plus"></i>
             <% end %>
           </div>
-          <%= link_to "New Item", [:new, @list, column, :item] %>
         </div>
-      </div>
+      <% end %>
     <% end %>
-  <% end %>
 
-  <%= link_to "New Column", new_list_column_path(@list) %>
-  <%= link_to "Edit this list", edit_list_path(@list) %> |
-  <%= link_to "Back to lists", lists_path %>
-
-  <%= button_to "Destroy this list", @list, method: :delete %>
+    <%= link_to new_list_column_path(@list) do %>
+      <i class="fa-solid fa-table-columns"></i>
+    <% end %>
+    <%#= link_to "New Column", new_list_column_path(@list) %>
+    <%= link_to edit_list_path(@list) do %>
+      <i class="fa-solid fa-pencil"></i>
+    <% end %>
+    <%= link_to lists_path do %>
+      <i class="fa-solid fa-arrow-left"></i>
+    <% end %>
+    <%= button_to "Destroy this list", @list, method: :delete %>
+  </div>
 </div>

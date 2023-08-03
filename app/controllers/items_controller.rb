@@ -4,9 +4,9 @@ class ItemsController < ApplicationController
   before_action :set_column
   before_action :set_item, only: %i[ edit update destroy ]
   # GET /items or /items.json
-  def index
-    @items = Item.all
-  end
+  # def index
+  #   @items = Item.all
+  # end
 
   # GET /items/1 or /items/1.json
   def show
@@ -34,25 +34,23 @@ class ItemsController < ApplicationController
 
   # PATCH/PUT /items/1 or /items/1.json
   def update
-    respond_to do |format|
-      if @item.update(item_params)
-        format.html { redirect_to @list, notice: "Item was successfully updated." }
-        format.json { render :show, status: :ok, location: @item }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
+    params[:positions].uniq.each_with_index do |id, index|
+      @column.items.find(id).update(position: index + 1)
+    end
+    if @item.update(item_params)
+      respond_to do |format|
+        format.html { redirect_to @list, notice: 'Item was successfully updated.' }
+        format.json {}
       end
+    else
+      render :edit
     end
   end
 
   # DELETE /items/1 or /items/1.json
   def destroy
     @item.destroy
-
-    respond_to do |format|
-      format.html { redirect_to list_url(@list), notice: "Item was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to @list, notice: "Item was successfully destroyed."
   end
 
   private
@@ -66,7 +64,6 @@ class ItemsController < ApplicationController
   def set_item
     @item = @column.items.find(params[:id])
   end
-
   def item_params
     params.require(:item).permit(:column_id, :content)
   end

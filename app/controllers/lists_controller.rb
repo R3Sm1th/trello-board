@@ -4,7 +4,7 @@ class ListsController < ApplicationController
 
   # GET /lists or /lists.json
   def index
-    @lists = current_user.company.lists.all
+    @lists = current_user.lists.all
   end
 
   # GET /lists/1 or /lists/1.json
@@ -61,7 +61,10 @@ class ListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
   def set_list
-    @list = current_user.company.lists.find(params[:id])
+    @list = current_company.lists
+                            .includes(columns: :items)
+                            .order('columns.id, items.position ASC')
+                            .find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
