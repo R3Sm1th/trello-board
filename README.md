@@ -1,1 +1,1 @@
-Rails app generated with [lewagon/rails-templates](https://github.com/lewagon/rails-templates), created by the [Le Wagon coding bootcamp](https://www.lewagon.com) team.
+This is a trello board clone. It allows the user to create an account, create a board and add/ sort items. This project was taken on to practice sorting libraries and persistent changes on the database using fetch requests. 
